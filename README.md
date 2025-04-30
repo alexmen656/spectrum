@@ -6,9 +6,11 @@
 
 
 
-## Inspiration / Problem Statement
+## Measurement
 
-What inspired this project? What problem are you trying to solve?
+We measure the survival rates of microorganism. (currently it is the paramecium)
+
+<img src="Paramecium.jpeg" width="150" style="vertical-align: middle; margin-right: 10px;">
 
 ## Goals
 
