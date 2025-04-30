@@ -8,7 +8,7 @@
 
 ## Measurement
 
-We measure the survival rates of microorganism. (currently it is the paramecium)
+We measure the survival rates of microorganisms. (currently it is the paramecium)
 
 
 <img src="Paramecium.jpg" width="150" style="vertical-align: middle; margin-right: 10px;">
