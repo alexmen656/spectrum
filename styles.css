@@ -1,0 +1,75 @@
+/* Main styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header-logos {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 15px;
+    font-style: italic;
+    color: #555;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+}
+
+.document-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.document-item {
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.document-description {
+    color: #666;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.task-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.task-list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.checkbox {
+    margin-right: 10px;
+}
+
+.team-section {
+    margin-top: 30px;
+}
+
+.progress-list {
+    list-style-type: disc;
+    padding-left: 20px;
+}
