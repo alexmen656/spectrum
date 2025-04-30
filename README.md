@@ -1,6 +1,9 @@
-<img src="Kopie von SPECTRUM (1) (2).png" width="200" style="vertical-align: middle; margin-right: 10px;">
+<div style="display: flex; align-items: center;">
+  <img src="logo.png" width="200" style="vertical-align: middle; margin-right: 10px;">
+  <img src="discord_logo.webp" width="50" style="vertical-align: middle;">
+</div>
 
-# Project Title
+# Project Titlead
 
 > We send microorganisms into the stratosphere and make homework rain from the sky!
 
