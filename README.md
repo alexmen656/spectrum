@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center;">
   <img src="logo.png" width="200" style="vertical-align: middle; margin-right: 10px;">
-  <img src="discord_logo.webp" width="50" style="vertical-align: middle;">
+  <img src="discord_logo.webp" width="200" style="vertical-align: middle;">
 </div>
 
 # Project Titlead
