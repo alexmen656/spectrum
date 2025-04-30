@@ -86,4 +86,7 @@ Current Progress:
 
 
 ## Team
-[Alex](https://hackclub.slack.com/team/U0877PG14F4) , [Alexander](https://hackclub.slack.com/team/U08HE8KST8T) , [Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) , [Richard](https://hackclub.slack.com/team/U08HH8E5DQB)
+[Alex](https://hackclub.slack.com/team/U0877PG14F4) - @alexmen656, 
+[Alexander](https://hackclub.slack.com/team/U08HE8KST8T) - SaskoLOL, 
+[Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) - Slivki-coder, 
+[Richard](https://hackclub.slack.com/team/U08HH8E5DQB) - @RichardD242
