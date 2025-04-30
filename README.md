@@ -1,4 +1,4 @@
-<img src="Kopie von SPECTRUM (1) (2).png" width="150" style="vertical-align: middle; margin-right: 10px;">
+<img src="Kopie von SPECTRUM (1) (2).png" width="200" style="vertical-align: middle; margin-right: 10px;">
 
 # Project Title
 
@@ -10,25 +10,23 @@
 
 We measure the survival rates of microorganism. (currently it is the paramecium)
 
-<img src="Paramecium.jpeg" width="150" style="vertical-align: middle; margin-right: 10px;">
+
+<img src="Paramecium.jpg" width="150" style="vertical-align: middle; margin-right: 10px;">
 
 ## Goals
 
-- [ ] List your key project goals here  
-- [ ] These can be technical, functional, or user-focused  
-- [ ] Helps show what you set out to do  
+- [ ] Get our grant  
+- [ ] Start building
+- [ ] Launch in Boston! 
 
 ## What We've Done So Far
 
-This section should reflect progress (especially after 30+ hours)
+Current Progress:
 
-- Research and planning  
-- Hardware prototyping  
-- Basic software framework  
-- Early testing or debugging  
-- CAD models or PCB schematics  
+- Research
+- Sketches and Prototypes
+- Code
+- Discussed a lot about different topics
 
-Include links or references to relevant files in your repo.
-
-## Project Structure
+### Documents and Files
 
