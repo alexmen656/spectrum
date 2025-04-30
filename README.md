@@ -76,7 +76,7 @@ Current Progress:
    - Summary is missing @Alexander
 - [sd_extractor.py](Code/sd_extractor.py)
    - Summary is missing @Alexander
-- [Spectrum!!!](Kopie%20von%20SPECTRUM%20%281%29%282%29.png)
+- [Spectrum!!!](Kopie%20von%20SPECTRUM%20(1)%20(2).png)
    - Our Team Logo!
 
 
