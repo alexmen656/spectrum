@@ -1,4 +1,4 @@
-<img src="icon.png" width="50" style="vertical-align: middle; margin-right: 10px;">
+<img src="Kopie von SPECTRUM (1) (2).png" width="150" style="vertical-align: middle; margin-right: 10px;">
 
 # Project Title
 
