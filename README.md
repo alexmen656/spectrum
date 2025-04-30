@@ -30,21 +30,21 @@ Current Progress:
 
 ### Documents and Files
 
-- [18.04. - 00.46 AM](18.04.%20-%2000.46%20AM.md)
+- [18.04. - 00.46 AM](Research/Oliver/Bacteria/18.04.%20-%2000.46%20AM.md)
    - Summary is missing! @Oliver
-- [Experiments](Experiments.md)
+- [Experiments](Research/Oliver/Bacteria/Experiments.md)
    - Summary is missing! @Oliver
-- [Paramecium Experiment](Paramecium%20Experiment.md)
+- [Paramecium Experiment](Research/Oliver/Bacteria/Paramecium%20Experiment.md)
    - Summary is missing! @Oliver
 - [Parts.md](Parts.md)
    - Not up to date
-- [Summary - 22.04.2025](Summary%20-%2022.04.2025.md)
+- [Summary - 22.04.2025](Research/Oliver/Bacteria/Summary%20-%2022.04.2025.md)
    - Summary is missing! @Oliver
-- [pigments](pigments.md)
+- [pigments](Research/Oliver/Bacteria/pigments.md)
    - Summary is missing! @Oliver
-- [Bacillus Subtilis](Bacillus%20Subtilis.md)
+- [Bacillus Subtilis](Research/Oliver/Bacteria/Bacillus%20Subtilis.md)
    - Summary is missing! @Oliver
-- [E-coli](E-coli.md)
+- [E-coli](Research/Oliver/Bacteria/E-coli.md)
    - Summary is missing! @Oliver
 - [Sketch1](1.png)
    - Visualization of the box including maths
@@ -56,28 +56,29 @@ Current Progress:
    - Overview of all possible microorganisms
 - [Transportation of Paramecium](Transportation%20of%20Paramecium.docx)
    - TSA and other regional laws including triple packaging
-- [Aseptic Technique](Aseptic%20Technique.docx)
+- [Aseptic Technique](Code/Aseptic%20Technique.docx)
    - Summary is missing @Alexander
-- [Bacterial justification extension](Bacterial%20justification%20extension.docx)
+- [Bacterial justification extension](Code/Bacterial%20justification%20extension.docx)
    - Summary is missing @Alexander
-- [Incubator](Incubator.docx)
+- [Incubator](Code/Incubator.docx)
    - Summary is missing @Alexander
-- [Microscope](Microscope.docx)
+- [Microscope](Code/Microscope.docx)
    - Summary is missing @Alexander
-- [RevivingFreeze-DriedMicroorganismsATCC](RevivingFreeze-DriedMicroorganismsATCC.pdf)
+- [RevivingFreeze-DriedMicroorganismsATCC](Code/RevivingFreeze-DriedMicroorganismsATCC.pdf)
    - Summary is missing @Alexander
-- [alternatives to a fluorescence microscope](alternatives%20to%20a%20fluorescence%20microscope.docx)
+- [alternatives to a fluorescence microscope](Code/alternatives%20to%20a%20fluorescence%20microscope.docx)
    - Summary is missing @Alexander
-- [b.s](b.s..docx)
+- [b.s](Code/b.s..docx)
    - Summary is missing @Alexander
-- [ofl](ofl.docx)
+- [ofl](Code/ofl.docx)
    - Summary is missing @Alexander
-- [ogs](ogs.docx)
+- [ogs](Code/ogs.docx)
    - Summary is missing @Alexander
-- [sd_extractor.py](sd_extractor.py)
+- [sd_extractor.py](Code/sd_extractor.py)
    - Summary is missing @Alexander
 - [Spectrum!!!](Kopie%20von%20SPECTRUM%20%281%29%282%29.png)
    - Our Team Logo!
+
 
 ## Team
 [Alex](https://hackclub.slack.com/team/U0877PG14F4) , [Alexander](https://hackclub.slack.com/team/U08HE8KST8T) , [Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) , [Richard](https://hackclub.slack.com/team/U08HH8E5DQB)
