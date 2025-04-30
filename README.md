@@ -46,15 +46,15 @@ Current Progress:
    - Summary is missing! @Oliver
 - [E-coli](Research/Oliver/Bacteria/E-coli.md)
    - Summary is missing! @Oliver
-- [Sketch1](1.png)
+- [Sketch1](Research%20and%20other/1.png)
    - Visualization of the box including maths
-- [Sketch2](2.png)
+- [Sketch2](Research%20and%20other/2.png)
    - Visualization of the box
-- [Bacillus subtilis - Data Possibilities](Bacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
+- [Bacillus subtilis - Data Possibilities](Research%20and%20other/Bacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
    - Possible Data Measurements including graphs and images
-- [Bacteria Doc](Bacteria%20Doc%20%281%29.pdf)
+- [Bacteria Doc](Research%20and%20other/Bacteria%20Doc%20%281%29.pdf)
    - Overview of all possible microorganisms
-- [Transportation of Paramecium](Transportation%20of%20Paramecium.docx)
+- [Transportation of Paramecium](Research%20and%20other/Transportation%20of%20Paramecium.docx)
    - TSA and other regional laws including triple packaging
 - [Aseptic Technique](Code/Aseptic%20Technique.docx)
    - Summary is missing @Alexander
