@@ -90,6 +90,4 @@ Current Progress:
 [Alexander](https://hackclub.slack.com/team/U08HE8KST8T) - SaskoLOL \
 [Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) - Slivki-coder \
 [Richard](https://hackclub.slack.com/team/U08HH8E5DQB) - RichardD242 \
-
-
 Last update: 1.05.2025
