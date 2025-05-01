@@ -3,7 +3,7 @@
   <img src="discord_logo.webp" width="200" style="vertical-align: middle;">
 </div>
 
-# Project Titlead
+# Spectrum
 
 > We send microorganisms into the stratosphere and make homework rain from the sky!
 
@@ -86,7 +86,7 @@ Current Progress:
 
 
 ## Team
-[Alex](https://hackclub.slack.com/team/U0877PG14F4) - @alexmen656, \
+[Alex](https://hackclub.slack.com/team/U0877PG14F4) - alexmen656, \
 [Alexander](https://hackclub.slack.com/team/U08HE8KST8T) - SaskoLOL, \
-[Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) - Slivki-coder, \
-[Richard](https://hackclub.slack.com/team/U08HH8E5DQB) - @RichardD242
+[Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) - Slivki-coder \
+[Richard](https://hackclub.slack.com/team/U08HH8E5DQB) - RichardD242
