@@ -32,7 +32,6 @@ Current Progress:
 - Discussed a lot about different topics
 
 ### Documents and Files
-### Documents and Files
 
 - [1.png](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/1.png)
 - [18.04. - 00.46 AM.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/18.04.%20-%2000.46%20AM.md)
