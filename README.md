@@ -31,59 +31,31 @@ Current Progress:
 - Code
 - Discussed a lot about different topics
 
+
 ### Documents and Files
 
-- [18.04. - 00.46 AM](Research/Oliver/Bacteria/18.04.%20-%2000.46%20AM.md)
-   - Summary is missing! @Oliver
-- [Experiments](Research/Oliver/Bacteria/Experiments.md)
-   - Summary is missing! @Oliver
-- [Paramecium Experiment](Research/Oliver/Bacteria/Paramecium%20Experiment.md)
-   - Summary is missing! @Oliver
-- [Parts.md](Parts.md)
-   - Not up to date
-- [Summary - 22.04.2025](Research/Oliver/Bacteria/Summary%20-%2022.04.2025.md)
-   - Summary is missing! @Oliver
-- [pigments](Research/Oliver/Bacteria/pigments.md)
-   - Summary is missing! @Oliver
-- [Bacillus Subtilis](Research/Oliver/Bacteria/Bacillus%20Subtilis.md)
-   - Summary is missing! @Oliver
-- [E-coli](Research/Oliver/Bacteria/E-coli.md)
-   - Summary is missing! @Oliver
-- [Sketch1](Research%20and%20other/1.png)
-   - Visualization of the box including maths
-- [Sketch2](Research%20and%20other/2.png)
-   - Visualization of the box
-- [Bacillus subtilis - Data Possibilities](Research%20and%20other/Bacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
-   - Possible Data Measurements including graphs and images
-- [Bacteria Doc](Research%20and%20other/Bacteria%20Doc%20%281%29.pdf)
-   - Overview of all possible microorganisms
-- [Transportation of Paramecium](Research%20and%20other/Transportation%20of%20Paramecium.docx)
-   - TSA and other regional laws including triple packaging
-- [Aseptic Technique](Code/Aseptic%20Technique.docx)
-   - Summary is missing @Alexander
-- [Bacterial justification extension](Code/Bacterial%20justification%20extension.docx)
-   - Summary is missing @Alexander
-- [Incubator](Code/Incubator.docx)
-   - Summary is missing @Alexander
-- [Microscope](Code/Microscope.docx)
-   - Summary is missing @Alexander
-- [RevivingFreeze-DriedMicroorganismsATCC](Code/RevivingFreeze-DriedMicroorganismsATCC.pdf)
-   - Summary is missing @Alexander
-- [alternatives to a fluorescence microscope](Code/alternatives%20to%20a%20fluorescence%20microscope.docx)
-   - Summary is missing @Alexander
-- [b.s](Code/b.s..docx)
-   - Summary is missing @Alexander
-- [CDS](Code/RIchard%20cds.docx)
-   - Summary is missing @Alexander
-- [ofl](Code/ofl.docx)
-   - Summary is missing @Alexander
-- [ogs](Code/ogs.docx)
-   - Summary is missing @Alexander
-- [sd_extractor.py](Code/sd_extractor.py)
-   - Summary is missing @Alexander
-- [Spectrum!!!](Kopie%20von%20SPECTRUM%20(1)%20(2).png)
-   - Our Team Logo!
-
+- [1.png](Research%5CRichard%5C1.png)
+   - Summary is missing!- [18.04. - 00.46 AM.md](Research%5COliver%5CBacteria%5C18.04.%20-%2000.46%20AM.md)
+   - Summary is missing!- [2.png](Research%5CRichard%5C2.png)
+   - Summary is missing!- [Bacillus subtilis - Data Possiblites (1).pdf](Research%5CAlexander%5CBacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
+   - Summary is missing!- [Bacillus subtilis - Data Possiblites (1).pdf](Research%5CRichard%5CBacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
+   - Summary is missing!- [Bacillus Subtilis.md](Research%5COliver%5CBacteria%5Cdata%5CBacillus%20Subtilis.md)
+   - Summary is missing!- [Bacteria Doc (1).pdf](Research%5CRichard%5CBacteria%20Doc%20%281%29.pdf)
+   - Summary is missing!- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+   - Summary is missing!- [E-coli.md](Research%5COliver%5CBacteria%5Cdata%5CE-coli.md)
+   - Summary is missing!- [Experiments.md](Research%5COliver%5CBacteria%5CExperiments.md)
+   - Summary is missing!- [logo.png](logo.png)
+   - Summary is missing!- [LogoGithub.png](LogoGithub.png)
+   - Summary is missing!- [Paramecium Experiment.md](Research%5COliver%5CBacteria%5CParamecium%20Experiment.md)
+   - Summary is missing!- [Parts.md](Research%5COliver%5CBacteria%5CParts.md)
+   - Summary is missing!- [pigments.md](Research%5COliver%5CBacteria%5Cpigments.md)
+   - Summary is missing!- [Possible strains.md](Research%5COliver%5CBacteria%5CPossible%20strains.md)
+   - Summary is missing!- [README.md](README.md)
+   - Summary is missing!- [RevivingFreeze-DriedMicroorganismsATCC.pdf](Research%5CAlexander%5CRevivingFreeze-DriedMicroorganismsATCC.pdf)
+   - Summary is missing!- [Screenshot 2025-04-30 at 9.42.47 PM.png](Research%5CAlex%5CTInkercad%5CScreenshot%202025-04-30%20at%209.42.47%E2%80%AFPM.png)
+   - Summary is missing!- [Screenshot 2025-04-30 at 9.42.54 PM.png](Research%5CAlex%5CTInkercad%5CScreenshot%202025-04-30%20at%209.42.54%E2%80%AFPM.png)
+   - Summary is missing!- [Summary - 22.04.2025.md](Research%5COliver%5CBacteria%5CSummary%20-%2022.04.2025.md)
+   - Summary is missing!
 
 ## Team
 [Alex](https://hackclub.slack.com/team/U0877PG14F4) - alexmen656 \
