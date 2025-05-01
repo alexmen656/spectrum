@@ -1,65 +1,60 @@
-<div style="display: flex; align-items: center;">
-  <img src="logo.png" width="200" style="vertical-align: middle; margin-right: 10px;">
-  <img src="discord_logo.webp" width="200" style="vertical-align: middle;">
-</div>
+## 📄 Alle Dateien im Repository:
 
-# Spectrum
-
-> We send microorganisms into the stratosphere and make homework rain from the sky!
-
-
-
-## Measurement
-
-We measure the survival rates of microorganisms. (currently it is the paramecium)
-
-
-<img src="Paramecium.jpg" width="150" style="vertical-align: middle; margin-right: 10px;">
-
-## Goals
-
-- [ ] Get our grant  
-- [ ] Start building
-- [ ] Launch in Boston! 
-
-## What We've Done So Far
-
-Current Progress:
-
-- Research
-- Sketches and Prototypes
-- Code
-- Discussed a lot about different topics
-
-
-### Documents and Files
-
-- [1.png](Research%5CRichard%5C1.png)
-   - Summary is missing!- [18.04. - 00.46 AM.md](Research%5COliver%5CBacteria%5C18.04.%20-%2000.46%20AM.md)
-   - Summary is missing!- [2.png](Research%5CRichard%5C2.png)
-   - Summary is missing!- [Bacillus subtilis - Data Possiblites (1).pdf](Research%5CAlexander%5CBacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
-   - Summary is missing!- [Bacillus subtilis - Data Possiblites (1).pdf](Research%5CRichard%5CBacillus%20subtilis%20-%20Data%20Possiblites%20%281%29.pdf)
-   - Summary is missing!- [Bacillus Subtilis.md](Research%5COliver%5CBacteria%5Cdata%5CBacillus%20Subtilis.md)
-   - Summary is missing!- [Bacteria Doc (1).pdf](Research%5CRichard%5CBacteria%20Doc%20%281%29.pdf)
-   - Summary is missing!- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-   - Summary is missing!- [E-coli.md](Research%5COliver%5CBacteria%5Cdata%5CE-coli.md)
-   - Summary is missing!- [Experiments.md](Research%5COliver%5CBacteria%5CExperiments.md)
-   - Summary is missing!- [logo.png](logo.png)
-   - Summary is missing!- [LogoGithub.png](LogoGithub.png)
-   - Summary is missing!- [Paramecium Experiment.md](Research%5COliver%5CBacteria%5CParamecium%20Experiment.md)
-   - Summary is missing!- [Parts.md](Research%5COliver%5CBacteria%5CParts.md)
-   - Summary is missing!- [pigments.md](Research%5COliver%5CBacteria%5Cpigments.md)
-   - Summary is missing!- [Possible strains.md](Research%5COliver%5CBacteria%5CPossible%20strains.md)
-   - Summary is missing!- [README.md](README.md)
-   - Summary is missing!- [RevivingFreeze-DriedMicroorganismsATCC.pdf](Research%5CAlexander%5CRevivingFreeze-DriedMicroorganismsATCC.pdf)
-   - Summary is missing!- [Screenshot 2025-04-30 at 9.42.47 PM.png](Research%5CAlex%5CTInkercad%5CScreenshot%202025-04-30%20at%209.42.47%E2%80%AFPM.png)
-   - Summary is missing!- [Screenshot 2025-04-30 at 9.42.54 PM.png](Research%5CAlex%5CTInkercad%5CScreenshot%202025-04-30%20at%209.42.54%E2%80%AFPM.png)
-   - Summary is missing!- [Summary - 22.04.2025.md](Research%5COliver%5CBacteria%5CSummary%20-%2022.04.2025.md)
-   - Summary is missing!
-
-## Team
-[Alex](https://hackclub.slack.com/team/U0877PG14F4) - alexmen656 \
-[Alexander](https://hackclub.slack.com/team/U08HE8KST8T) - SaskoLOL \
-[Oliver](https://hackclub.slack.com/team/U07L48Q6BUY) - Slivki-coder \
-[Richard](https://hackclub.slack.com/team/U08HH8E5DQB) - RichardD242 \
-Last update: 1.05.2025
+- [CODE_OF_CONDUCT.md](https://github.com/alexmen656/spectrum/blob/main/CODE_OF_CONDUCT.md)
+- [LogoGithub.png](https://github.com/alexmen656/spectrum/blob/main/LogoGithub.png)
+- [Paramecium.jpg](https://github.com/alexmen656/spectrum/blob/main/Paramecium.jpg)
+- [Research/Alex/Concepts/Zeichnung.jpg](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Concepts/Zeichnung.jpg)
+- [Research/Alex/Concepts/Zeichnung2-Kopie.jpg](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Concepts/Zeichnung2-Kopie.jpg)
+- [Research/Alex/Concepts/Zeichnung2.jpg](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Concepts/Zeichnung2.jpg)
+- [Research/Alex/Proposal.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Proposal.docx)
+- [Research/Alex/Sketches/IMG_0358.webp](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Sketches/IMG_0358.webp)
+- [Research/Alex/Sketches/IMG_0360.webp](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Sketches/IMG_0360.webp)
+- [Research/Alex/Sketches/Light_camera.webp](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Sketches/Light_camera.webp)
+- [Research/Alex/Sketches/top_view_prototype.webp](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/Sketches/top_view_prototype.webp)
+- [Research/Alex/TInkercad/Screenshot 2025-04-30 at 9.42.47 PM.png](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/TInkercad/Screenshot 2025-04-30 at 9.42.47 PM.png)
+- [Research/Alex/TInkercad/Screenshot 2025-04-30 at 9.42.54 PM.png](https://github.com/alexmen656/spectrum/blob/main/Research/Alex/TInkercad/Screenshot 2025-04-30 at 9.42.54 PM.png)
+- [Research/Alexander/Aseptic Technique (2).docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Aseptic Technique (2).docx)
+- [Research/Alexander/Bacillus subtilis - Data Possiblites (1).pdf](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Bacillus subtilis - Data Possiblites (1).pdf)
+- [Research/Alexander/Bacteria.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Bacteria.docx)
+- [Research/Alexander/Bacterial justification extension.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Bacterial justification extension.docx)
+- [Research/Alexander/Bacterial justification.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Bacterial justification.docx)
+- [Research/Alexander/Comparison of Paramecium and Tardigrades.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Comparison of Paramecium and Tardigrades.docx)
+- [Research/Alexander/Contamination refers to the presence of harmful microorganisms or foreign material.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Contamination refers to the presence of harmful microorganisms or foreign material.docx)
+- [Research/Alexander/Different kinds of Paramecium.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Different kinds of Paramecium.docx)
+- [Research/Alexander/Equipment for Bacteria inspection.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Equipment for Bacteria inspection.docx)
+- [Research/Alexander/Incubator.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Incubator.docx)
+- [Research/Alexander/Microscope.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Microscope.docx)
+- [Research/Alexander/RIchard cds.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/RIchard cds.docx)
+- [Research/Alexander/Research](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Research)
+- [Research/Alexander/RevivingFreeze-DriedMicroorganismsATCC.pdf](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/RevivingFreeze-DriedMicroorganismsATCC.pdf)
+- [Research/Alexander/Untersuchung der Überlebensfähigkeit von Halobacterium salinarum in der Stratosphäre.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/Untersuchung der Überlebensfähigkeit von Halobacterium salinarum in der Stratosphäre.docx)
+- [Research/Alexander/alternatives to a fluorescence microscope.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/alternatives to a fluorescence microscope.docx)
+- [Research/Alexander/b.s..docx](https://github.com/alexmen656/spectrum/blob/main/Research/Alexander/b.s..docx)
+- [Research/Oliver/Bacteria/18.04. - 00.46 AM.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/18.04. - 00.46 AM.md)
+- [Research/Oliver/Bacteria/Experiments.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/Experiments.md)
+- [Research/Oliver/Bacteria/Paramecium Experiment.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/Paramecium Experiment.md)
+- [Research/Oliver/Bacteria/Parts.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/Parts.md)
+- [Research/Oliver/Bacteria/Possible strains.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/Possible strains.md)
+- [Research/Oliver/Bacteria/Summary - 22.04.2025.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/Summary - 22.04.2025.md)
+- [Research/Oliver/Bacteria/data/Bacillus Subtilis.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/data/Bacillus Subtilis.md)
+- [Research/Oliver/Bacteria/data/E-coli.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/data/E-coli.md)
+- [Research/Oliver/Bacteria/pigments.md](https://github.com/alexmen656/spectrum/blob/main/Research/Oliver/Bacteria/pigments.md)
+- [Research/Richard/1.png](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/1.png)
+- [Research/Richard/2.png](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/2.png)
+- [Research/Richard/Bacillus subtilis - Data Possiblites (1).pdf](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/Bacillus subtilis - Data Possiblites (1).pdf)
+- [Research/Richard/Bacteria Doc (1).pdf](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/Bacteria Doc (1).pdf)
+- [Research/Richard/Transportation of Paramecium.docx](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/Transportation of Paramecium.docx)
+- [Research/Richard/httpswww.tinkercad.comthingsbYqAHm8.txt](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/httpswww.tinkercad.comthingsbYqAHm8.txt)
+- [Research/Richard/main.cpp](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/main.cpp)
+- [Research/Richard/main.exe](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/main.exe)
+- [Research/Richard/test](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/test)
+- [Research/Richard/test.cpp](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/test.cpp)
+- [Research/Richard/test.exe](https://github.com/alexmen656/spectrum/blob/main/Research/Richard/test.exe)
+- [discord_logo.webp](https://github.com/alexmen656/spectrum/blob/main/discord_logo.webp)
+- [index.html](https://github.com/alexmen656/spectrum/blob/main/index.html)
+- [logo.png](https://github.com/alexmen656/spectrum/blob/main/logo.png)
+- [styles.css](https://github.com/alexmen656/spectrum/blob/main/styles.css)
+- [tes11t.md](https://github.com/alexmen656/spectrum/blob/main/tes11t.md)
+- [test.md](https://github.com/alexmen656/spectrum/blob/main/test.md)
+- [updater.py](https://github.com/alexmen656/spectrum/blob/main/updater.py)
+- [updater1.py](https://github.com/alexmen656/spectrum/blob/main/updater1.py)
