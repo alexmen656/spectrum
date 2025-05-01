@@ -21,18 +21,18 @@ def get_all_files(root_dir):
             file_paths.append((file_name, relative_path_url, author))
     return sorted(file_paths, key=lambda x: x[0].lower())
 
+
 def get_git_author(file_path):
     try:
-        # Wer hat die Datei ursprünglich hinzugefügt? (diff-filter=A = added)
         output = subprocess.check_output(
             ["git", "log", "--diff-filter=A", "--follow", "--format=%an", "--", file_path],
             stderr=subprocess.DEVNULL,
             universal_newlines=True
         )
+        # Gib den ersten Namen zurück (der die Datei erstellt hat)
         return output.strip().splitlines()[0] if output else "Unknown"
     except subprocess.CalledProcessError:
         return "Unknown"
-
 
 def generate_markdown_links(files):
     lines = ["### Documents and Files\n"]
