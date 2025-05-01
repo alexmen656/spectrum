@@ -13,6 +13,8 @@ def get_all_files(root_dir):
                 continue
             full_path = os.path.join(dirpath, file)
             relative_path = os.path.relpath(full_path, root_dir)
+            # Ersetze Leerzeichen durch %20
+            relative_path = relative_path.replace(" ", "%20")
             file_paths.append(relative_path.replace("\\", "/"))
     return sorted(file_paths)
 
