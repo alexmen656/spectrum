@@ -13,31 +13,31 @@ def get_all_files(root_dir):
                 continue
             full_path = os.path.join(dirpath, file)
             relative_path = os.path.relpath(full_path, root_dir)
-            # Ersetze Leerzeichen durch %20 und nehme nur den Dateinamen
-            relative_path = relative_path.replace(" ", "%20")
-            file_name = os.path.basename(relative_path)  # Nur der Dateiname
-            file_paths.append((file_name, relative_path))  # Behalte den Dateinamen und den Pfad
+            # Ersetze Leerzeichen durch %20 für den Link, aber lasse den Dateinamen unverändert
+            file_paths.append((file, relative_path.replace(" ", "%20")))  # Nur den Dateinamen, aber Pfad mit %20
     return sorted(file_paths, key=lambda x: x[0])  # Sortiere nach Dateiname
 
 def generate_markdown_links(files):
     # Die Markdown-Dateiliste im gewünschten Format generieren
     lines = ["### Documents and Files\n"]
     for file_name, relative_path in files:
+        # In den eckigen Klammern der Dateiname ohne %20, im Link selbst aber mit %20
         lines.append(f"- [{file_name}]({REPO_URL}/{relative_path})")
     return "\n".join(lines)
 
 def update_readme(content):
-    # Das README öffnen und aktualisieren
     with open(README_PATH, "r", encoding="utf-8") as f:
         readme_content = f.read()
 
-    # Die Dateiliste an der richtigen Stelle einfügen
+    # Der Startmarker für die "Documents and Files"-Sektion
     start_marker = "### Documents and Files"
+    
+    # Falls der Abschnitt existiert, ersetzen wir ihn, sonst fügen wir ihn hinzu
     if start_marker in readme_content:
-        # Wenn der Abschnitt schon existiert, ersetzen wir ihn
+        # Den Abschnitt durch den neuen Inhalt ersetzen
         readme_content = readme_content.replace(f"{start_marker}\n", f"{start_marker}\n{content}\n")
     else:
-        # Wenn der Abschnitt noch nicht existiert, fügen wir ihn am Ende ein
+        # Falls der Abschnitt nicht existiert, den Abschnitt am Ende hinzufügen
         readme_content += f"\n{content}"
 
     # Die aktualisierte README-Datei speichern
