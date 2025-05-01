@@ -13,20 +13,35 @@ def get_all_files(root_dir):
                 continue
             full_path = os.path.join(dirpath, file)
             relative_path = os.path.relpath(full_path, root_dir)
-            file_paths.append((file, relative_path.replace(" ", "%20")))
+            relative_path_url = relative_path.replace(" ", "%20").replace("\\", "/")
+            file_name = os.path.basename(relative_path)
+
+            # Git-Benutzer, der die Datei zuletzt geändert hat
+            author = get_git_author(full_path)
+            file_paths.append((file_name, relative_path_url, author))
     return sorted(file_paths, key=lambda x: x[0].lower())
+
+def get_git_author(file_path):
+    try:
+        output = subprocess.check_output(
+            ["git", "log", "-1", "--pretty=format:%an", "--", file_path],
+            stderr=subprocess.DEVNULL,
+            universal_newlines=True
+        )
+        return output.strip() if output else "Unknown"
+    except subprocess.CalledProcessError:
+        return "Unknown"
 
 def generate_markdown_links(files):
     lines = ["### Documents and Files\n"]
-    for file_name, relative_path in files:
-        lines.append(f"- [{file_name}]({REPO_URL}/{relative_path})")
+    for file_name, relative_path, author in files:
+        lines.append(f"- [{file_name} - {author}]({REPO_URL}/{relative_path})")
     return "\n".join(lines)
 
 def update_readme(new_section):
     with open(README_PATH, "r", encoding="utf-8") as f:
         readme_content = f.read()
 
-    # Regex: Suche den alten Block und ersetze ihn, sonst hänge den neuen Block an
     pattern = r"### Documents and Files\n(?:- .*\n?)*"
     if re.search(pattern, readme_content):
         updated_content = re.sub(pattern, f"{new_section}\n", readme_content)
