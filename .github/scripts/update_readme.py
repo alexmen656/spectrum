@@ -13,16 +13,17 @@ def get_all_files(root_dir):
                 continue
             full_path = os.path.join(dirpath, file)
             relative_path = os.path.relpath(full_path, root_dir)
-            # Ersetze Leerzeichen durch %20
+            # Ersetze Leerzeichen durch %20 und nehme nur den Dateinamen
             relative_path = relative_path.replace(" ", "%20")
-            file_paths.append(relative_path.replace("\\", "/"))
-    return sorted(file_paths)
+            file_name = os.path.basename(relative_path)  # Nur der Dateiname
+            file_paths.append((file_name, relative_path))  # Behalte den Dateinamen und den Pfad
+    return sorted(file_paths, key=lambda x: x[0])  # Sortiere nach Dateiname
 
 def generate_markdown_links(files):
     # Die Markdown-Dateiliste im gewünschten Format generieren
     lines = ["### Documents and Files\n"]
-    for file in files:
-        lines.append(f"- [{file}]({REPO_URL}/{file})")
+    for file_name, relative_path in files:
+        lines.append(f"- [{file_name}]({REPO_URL}/{relative_path})")
     return "\n".join(lines)
 
 def update_readme(content):
