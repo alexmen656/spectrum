@@ -1,0 +1,33 @@
+name: Update README with new files
+
+on:
+  push:
+    paths:
+      - '**'  # Trigger on any file change
+      - '!README.md'  # Exclude README.md to prevent loops
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Needed for full git history
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    
+    - name: Run updater script
+      run: |
+        python ./updater1.py
+        
+    - name: Commit and push changes
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git diff --quiet || (git add README.md && git commit -m "Automated README update")
+        git push
