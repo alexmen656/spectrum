@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Paramecium Simulation with Drag & Drop Food</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1e1e1e;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+  }
+  canvas {
+    background: #ccf;
+    border-right: 2px solid #333;
+    flex: 1;
+    cursor: crosshair;
+    width: 800px; /* Must match HTML width attr */
+    height: 600px; /* Must match HTML height attr */
+    display: block;
+  }
+  #panel {
+    width: 340px;
+    padding: 20px;
+    background: #2a2a2a;
+    overflow-y: auto;
+    position: relative;
+    user-select: none;
+  }
+  h2 { margin-top: 0; }
+  label { display: block; margin: 10px 0 4px; }
+  input[type="range"] { width: 100%; }
+  .value { float: right; }
+  .divider { margin: 20px 0; border-top: 1px solid #444; }
+  .info-box {
+    background: #1e1e1e;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    color: #ddd;
+  }
+  .info-box table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .info-box td {
+    padding: 6px;
+    border-bottom: 1px solid #444;
+  }
+  .info-box td:first-child { font-weight: bold; }
+  button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover { background: #666; }
+  #dragFood {
+    width: 20px;
+    height: 20px;
+    background: orange;
+    border-radius: 50%;
+    margin: 15px auto;
+    cursor: grab;
+  }
+  #dragFood.dragging {
+    opacity: 0.6;
+    cursor: grabbing;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="dish" width="800" height="600"></canvas>
+
+<div id="panel">
+  <h2>Simulation Controls</h2>
+  <div><strong>Time Elapsed:</strong> <span id="clock">0s</span></div>
+  <div><strong>Population:</strong> <span id="population">0</span></div>
+
+  <label for="reproRate">Reproduction Rate: <span class="value" id="reproVal">0.01</span></label>
+  <input type="range" id="reproRate" min="0.0001" max="0.05" step="0.0005" value="0.01">
+
+  <label for="speedControl">Speed: <span class="value" id="speedVal">1.5</span></label>
+  <input type="range" id="speedControl" min="0.5" max="5" step="0.1" value="1.5">
+
+  <button id="toggleSim">Stop Simulation</button>
+  <button onclick="resetSimulation()">Reset Simulation</button>
+  <button onclick="downloadReport()">Download Report</button>
+
+  <div class="divider"></div>
+
+  <div style="text-align:center;">
+    <div id="dragFood" draggable="true" title="Drag me to the dish to add food"></div>
+    <small>Drag this food pellet onto the dish</small>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="info-box">
+    <strong>Real Life Simulation Settings</strong>
+    <table>
+      <tr><td>Parameter</td><td>Code Setting</td><td>Realistic Value</td></tr>
+      <tr><td>Reproduction Timer</td><td>> 400</td><td>10000–15000 ms</td></tr>
+      <tr><td>Reproduction Chance</td><td>0.01</td><td>0.001 or less</td></tr>
+      <tr><td>Global Speed</td><td>1.5</td><td>Fine, add wobble</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+let canvas = document.getElementById("dish");
+let ctx = canvas.getContext("2d");
+
+let paramecia = [], foodParticles = [], simTime = 0;
+let reproductionChance = 0.01, globalSpeed = 1.5;
+let clockDisplay = document.getElementById("clock");
+let populationDisplay = document.getElementById("population");
+let reproInput = document.getElementById("reproRate");
+let reproVal = document.getElementById("reproVal");
+let speedInput = document.getElementById("speedControl");
+let speedVal = document.getElementById("speedVal");
+
+let running = true;
+let animationFrameId;
+
+class Paramecium {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.angle = Math.random() * 2 * Math.PI;
+    this.speed = globalSpeed * (1 + Math.random() * 0.3);
+    this.reproduceTimer = 0;
+  }
+  update() {
+    const target = this.findNearestFood();
+    if (target) {
+      let dx = target.x - this.x, dy = target.y - this.y;
+      this.angle = Math.atan2(dy, dx);
+      if (Math.hypot(dx, dy) < 6) {
+        target.eaten = true;
+        this.reproduceTimer += 200;
+      }
+    } else {
+      this.angle += (Math.random() - 0.5) * 0.05;
+    }
+
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
+
+    // Bounce on walls
+    if (this.x < 10) {
+      this.x = 10;
+      this.angle = Math.PI - this.angle;
+    } else if (this.x > canvas.width - 10) {
+      this.x = canvas.width - 10;
+      this.angle = Math.PI - this.angle;
+    }
+
+    if (this.y < 10) {
+      this.y = 10;
+      this.angle = -this.angle;
+    } else if (this.y > canvas.height - 10) {
+      this.y = canvas.height - 10;
+      this.angle = -this.angle;
+    }
+
+    this.reproduceTimer++;
+  }
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 10, 5, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(2, 0, 2, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(100,100,255,0.8)";
+    ctx.fill();
+    ctx.restore();
+  }
+  shouldReproduce() {
+    return this.reproduceTimer > 400 && Math.random() < reproductionChance;
+  }
+  reproduce() {
+    this.reproduceTimer = 0;
+    return new Paramecium(this.x + Math.random() * 5, this.y + Math.random() * 5);
+  }
+  findNearestFood() {
+    return foodParticles.filter(f => !f.eaten).sort((a,b) => {
+      return ((a.x - this.x)**2 + (a.y - this.y)**2) - ((b.x - this.x)**2 + (b.y - this.y)**2);
+    })[0];
+  }
+}
+
+class Food {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.eaten = false;
+  }
+  draw() {
+    if (!this.eaten) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = "orange";
+      ctx.fill();
+    }
+  }
+}
+
+function initialize() {
+  paramecia = [];
+  foodParticles = [];
+  simTime = 0;
+  for (let i = 0; i < 15; i++) {
+    paramecia.push(new Paramecium(Math.random() * canvas.width, Math.random() * canvas.height));
+  }
+}
+
+function animate() {
+  if (!running) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const newOnes = [];
+  paramecia.forEach(p => {
+    p.update();
+    p.draw();
+    if (p.shouldReproduce()) newOnes.push(p.reproduce());
+  });
+  foodParticles = foodParticles.filter(f => !f.eaten);
+  foodParticles.forEach(f => f.draw());
+  paramecia = paramecia.concat(newOnes);
+  simTime += 0.05 * globalSpeed;
+  updateUI();
+  animationFrameId = requestAnimationFrame(animate);
+}
+
+function updateUI() {
+  populationDisplay.textContent = paramecia.length;
+  clockDisplay.textContent = `${Math.floor(simTime)}s`;
+  reproVal.textContent = reproductionChance.toFixed(4);
+  speedVal.textContent = globalSpeed.toFixed(1);
+}
+
+reproInput.addEventListener("input", () => {
+  reproductionChance = parseFloat(reproInput.value);
+});
+
+speedInput.addEventListener("input", () => {
+  globalSpeed = parseFloat(speedInput.value);
+  paramecia.forEach(p => p.speed = globalSpeed * (1 + Math.random() * 0.3));
+});
+
+function resetSimulation() {
+  initialize();
+  if (!running) {
+    running = true;
+    toggleSimBtn.textContent = "Stop Simulation";
+    animate();
+  }
+}
+
+const dragFood = document.getElementById("dragFood");
+let dragging = false;
+
+dragFood.addEventListener("dragstart", (e) => {
+  dragging = true;
+  dragFood.classList.add("dragging");
+  e.dataTransfer.setDragImage(new Image(), 0, 0); // Hide default ghost image
+});
+
+dragFood.addEventListener("dragend", () => {
+  dragging = false;
+  dragFood.classList.remove("dragging");
+});
+
+// Handle drop on canvas with proper scaling fix
+canvas.addEventListener("dragover", e => {
+  e.preventDefault();
+});
+canvas.addEventListener("drop", e => {
+  e.preventDefault();
+  if (dragging) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    foodParticles.push(new Food(x, y));
+    dragging = false;
+    dragFood.classList.remove("dragging");
+  }
+});
+
+// Toggle simulation running
+const toggleSimBtn = document.getElementById("toggleSim");
+toggleSimBtn.addEventListener("click", () => {
+  running = !running;
+  if (running) {
+    toggleSimBtn.textContent = "Stop Simulation";
+    animate();
+  } else {
+    toggleSimBtn.textContent = "Start Simulation";
+    cancelAnimationFrame(animationFrameId);
+  }
+});
+
+function downloadReport() {
+  // Real life reproduction time (average 3 minutes)
+  const realReproTimeSec = 180; 
+
+  // Our sim reproduction timer approx 400 (code ticks, ~0.05 sim seconds per frame * speed)
+  // Estimate sim reproduction period in seconds:
+  // We have paramecium reproduce if reproduceTimer > 400 ticks.
+  // Each tick corresponds to about (simTime / actual ticks), but let's approximate:
+
+  // Approximate sim reproduction duration in seconds:
+  // Let's say 400 ticks * (1 tick = 0.05 / globalSpeed) seconds per tick
+  const simReproPeriodSec = 400 * (0.05 / globalSpeed);
+
+  // Calculate how many real seconds each sim second corresponds to:
+  // realReproTimeSec / simReproPeriodSec
+  const scaleFactor = realReproTimeSec / simReproPeriodSec;
+
+  // Convert sim time to estimated real time:
+  const estimatedRealSeconds = simTime * scaleFactor;
+  const estimatedRealHours = (estimatedRealSeconds / 3600).toFixed(2);
+
+  const dataURL = canvas.toDataURL("image/png");
+  const html = `
+    <html>
+      <head><title>Simulation Report</title></head>
+      <body style="font-family: sans-serif; margin: 20px;">
+        <h1>Paramecium Simulation Report</h1>
+        <p><strong>Simulated Time Elapsed:</strong> ${Math.floor(simTime)} seconds</p>
+        <p><strong>Estimated Real-Life Equivalent:</strong> ~${estimatedRealHours} hours</p>
+        <p><strong>Final Population:</strong> ${paramecia.length}</p>
+        <p><strong>Reproduction Chance:</strong> ${reproductionChance.toFixed(4)}</p>
+        <p><strong>Speed:</strong> ${globalSpeed.toFixed(2)}</p>
+        <hr />
+        <p><em>Note:</em> Estimated real-life equivalent is based on reproduction time scaling (approx. 3 minutes real reproduction time).</p>
+        <img src="${dataURL}" style="max-width:100%; border:1px solid #ccc; margin-top: 10px;" />
+      </body>
+    </html>
+  `;
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "simulation_report.html";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+
+initialize();
+animate();
+</script>
+</body>
+</html>
