@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Paramecium Sim_v3</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1e1e1e;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+  }
+  canvas {
+    background: #ccf;
+    border-right: 2px solid #333;
+    flex: 1;
+    cursor: crosshair;
+    width: 800px;
+    height: 600px;
+    display: block;
+  }
+  #panel {
+    width: 340px;
+    padding: 20px;
+    background: #2a2a2a;
+    overflow-y: auto;
+  }
+  label { display: block; margin: 10px 0 4px; }
+  input[type="range"] { width: 100%; }
+  .value { float: right; }
+  .divider { margin: 20px 0; border-top: 1px solid #444; }
+  .info-box {
+    background: #1e1e1e;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    color: #ddd;
+  }
+  .info-box td {
+    padding: 6px;
+    border-bottom: 1px solid #444;
+  }
+  .info-box td:first-child { font-weight: bold; }
+  button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover { background: #666; }
+
+  .foodDrag {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 5px auto;
+    cursor: grab;
+  }
+  .foodDrag.dragging {
+    opacity: 0.6;
+    cursor: grabbing;
+  }
+  #foodContainer {
+    text-align: center;
+  }
+  
+  .zone-control {
+    margin: 15px 0;
+    padding: 10px;
+    background: #333;
+    border-radius: 8px;
+  }
+  .zone-color {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    border-radius: 4px;
+  }
+  .zone-title {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bold;
+  }
+  .zone-active {
+    background: #555;
+    box-shadow: 0 0 0 2px #fff;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="dish" width="800" height="600"></canvas>
+
+<div id="panel">
+  <h2>Simulation Controls</h2>
+  <div><strong>Time Elapsed:</strong> <span id="clock">0s</span></div>
+  <div><strong>Population:</strong> <span id="population">0</span></div>
+  <div><strong>Deaths:</strong> <span id="deaths">0</span></div>
+
+  <label for="reproRate">Reproduction Rate: <span class="value" id="reproVal">0.01</span></label>
+  <input type="range" id="reproRate" min="0.0001" max="0.05" step="0.0005" value="0.01">
+
+  <label for="speedControl">Speed: <span class="value" id="speedVal">1.5</span></label>
+  <input type="range" id="speedControl" min="0.5" max="5" step="0.1" value="1.5">
+
+  <label for="tempControl">Temperature (°C): <span class="value" id="tempVal">22</span></label>
+  <input type="range" id="tempControl" min="10" max="45" step="1" value="22">
+
+  <button id="toggleSim">Stop Simulation</button>
+  <button onclick="resetSimulation()">Reset Simulation</button>
+  <button onclick="downloadReport()">Download Report</button>
+
+  <div class="divider"></div>
+
+  <h3>Environmental Zones</h3>
+  <div class="info-box">
+    <p><strong>Health Bar:</strong> Visual indicator of paramecium health (green=healthy, yellow=caution, red=danger)</p>
+    <p><strong>To create zones:</strong> Click a zone type below, then drag on canvas</p>
+    <p><strong>To move zones:</strong> Click to select (highlighted white), then drag</p>
+  </div>
+  
+  <div class="zone-control" id="uvControl">
+    <div class="zone-color" style="background: rgba(255, 255, 0, 0.3);"></div>
+    <div class="zone-title">UV Zone</div>
+    <label>Intensity: <span class="value" id="uvIntensityVal">50</span></label>
+    <input type="range" id="uvIntensity" min="0" max="100" step="1" value="50">
+  </div>
+  
+  <div class="zone-control" id="acidControl">
+    <div class="zone-color" style="background: rgba(255, 0, 0, 0.3);"></div>
+    <div class="zone-title">Acidic Zone</div>
+    <label>Intensity: <span class="value" id="acidIntensityVal">50</span></label>
+    <input type="range" id="acidIntensity" min="0" max="100" step="1" value="50">
+  </div>
+  
+  <div class="zone-control" id="coldControl">
+    <div class="zone-color" style="background: rgba(0, 200, 255, 0.3);"></div>
+    <div class="zone-title">Cold Zone</div>
+    <label>Intensity: <span class="value" id="coldIntensityVal">50</span></label>
+    <input type="range" id="coldIntensity" min="0" max="100" step="1" value="50">
+  </div>
+  
+  <button id="clearZones">Clear All Zones</button>
+  <button id="deleteZone">Delete Selected Zone</button>
+
+  <div class="divider"></div>
+
+  <div id="foodContainer">
+    <div class="foodDrag" id="normalFood" draggable="true" style="background: orange;" title="Normal Food"></div>
+    <div class="foodDrag" id="mutantFood" draggable="true" style="background: purple;" title="Mutant Food"></div>
+    <div class="foodDrag" id="deadlyFood" draggable="true" style="background: red;" title="Deadly Food"></div>
+    <small>Drag food pellets onto the dish</small>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="info-box">
+    <strong>Zone Effects</strong>
+    <table>
+      <tr><td>UV Zone</td><td>Health decreases over time</td></tr>
+      <tr><td>Acidic Zone</td><td>Health & speed decrease</td></tr>
+      <tr><td>Cold Zone</td><td>Speed decreases</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+let canvas = document.getElementById("dish");
+let ctx = canvas.getContext("2d");
+
+let paramecia = [], foodParticles = [], simTime = 0;
+let reproductionChance = 0.01, globalSpeed = 1.5, temperature = 22;
+let deathCount = 0;
+
+let clockDisplay = document.getElementById("clock");
+let populationDisplay = document.getElementById("population");
+let deathsDisplay = document.getElementById("deaths");
+let reproInput = document.getElementById("reproRate");
+let reproVal = document.getElementById("reproVal");
+let speedInput = document.getElementById("speedControl");
+let speedVal = document.getElementById("speedVal");
+let tempInput = document.getElementById("tempControl");
+let tempVal = document.getElementById("tempVal");
+
+// Environmental zones
+let zones = [];
+let uvIntensity = 50;
+let acidIntensity = 50;
+let coldIntensity = 50;
+let currentZoneType = null;
+let isDrawingZone = false;
+let zoneStartPos = { x: 0, y: 0 };
+let tempZonePos = { x1: 0, y1: 0, x2: 0, y2: 0 };
+let selectedZoneIndex = -1;
+let isDraggingZone = false;
+let dragOffset = { x: 0, y: 0 };
+
+let running = true;
+let animationFrameId;
+let draggingType = null;
+
+class Paramecium {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.angle = Math.random() * 2 * Math.PI;
+    this.speed = globalSpeed * (1 + Math.random() * 0.3);
+    this.reproduceTimer = 0;
+    this.alive = true;
+    this.fade = 1;
+    this.deathColor = null;
+    this.eatHistory = [];
+    this.health = 100;
+    this.baseSpeed = this.speed;
+  }
+
+  update() {
+    if (!this.alive) {
+      this.fade -= 0.02;
+      if (this.fade <= 0) this.fade = 0;
+      return;
+    }
+
+    if (temperature > 40 || this.reproduceTimer > 2000) {
+      this.kill("red");
+      return;
+    }
+
+    const now = simTime * 1000;
+    this.eatHistory = this.eatHistory.filter(t => now - t < 5000);
+    if (this.eatHistory.length > 3) {
+      this.kill("purple");
+      return;
+    }
+
+    // Reset to base speed before applying new effects
+    this.speed = this.baseSpeed * (1 + Math.random() * 0.1);
+    
+    // Apply environmental effects
+    this.applyZoneEffects();
+
+    if (this.health <= 0) {
+      this.kill("brown");
+      return;
+    }
+
+    const target = this.findNearestFood();
+    if (target) {
+      let dx = target.x - this.x, dy = target.y - this.y;
+      this.angle = Math.atan2(dy, dx);
+      if (Math.hypot(dx, dy) < 6) {
+        target.eaten = true;
+        switch (target.type) {
+          case "normal":
+            this.reproduceTimer += 200;
+            this.health = Math.min(100, this.health + 10);
+            break;
+          case "mutant":
+            this.reproduceTimer += 300;
+            this.baseSpeed *= 1.1;
+            this.health = Math.min(100, this.health + 15);
+            break;
+          case "deadly":
+            this.kill("black");
+            return;
+        }
+        this.eatHistory.push(now);
+      }
+    } else {
+      this.angle += (Math.random() - 0.5) * 0.05;
+    }
+
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
+
+    if (this.x < 10 || this.x > canvas.width - 10) this.angle = Math.PI - this.angle;
+    if (this.y < 10 || this.y > canvas.height - 10) this.angle = -this.angle;
+
+    this.reproduceTimer++;
+  }
+
+  applyZoneEffects() {
+    zones.forEach(zone => {
+      if (this.isInZone(zone)) {
+        switch (zone.type) {
+          case "uv":
+            this.health -= zone.intensity * 0.005;
+            break;
+          case "acid":
+            this.health -= zone.intensity * 0.01;
+            this.speed *= (1 - zone.intensity * 0.0005);
+            break;
+          case "cold":
+            this.speed *= (1 - zone.intensity * 0.0008);
+            break;
+        }
+      }
+    });
+  }
+
+  isInZone(zone) {
+    const x1 = Math.min(zone.x1, zone.x2);
+    const x2 = Math.max(zone.x1, zone.x2);
+    const y1 = Math.min(zone.y1, zone.y2);
+    const y2 = Math.max(zone.y1, zone.y2);
+    return this.x >= x1 && this.x <= x2 && this.y >= y1 && this.y <= y2;
+  }
+
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.angle);
+    ctx.globalAlpha = this.fade;
+
+    // Draw health indicator (fixed the color change logic)
+    if (this.alive) {
+      const healthWidth = 24 * (this.health / 100);
+      
+      // Background
+      ctx.beginPath();
+      ctx.rect(-12, -12, 24, 3);
+      ctx.fillStyle = "#333";
+      ctx.fill();
+      
+      // Health bar
+      ctx.beginPath();
+      ctx.rect(-12, -12, healthWidth, 3);
+      
+      // Color based on health percentage
+      if (this.health > 50) {
+        ctx.fillStyle = "lime";
+      } else if (this.health > 25) {
+        ctx.fillStyle = "yellow";
+      } else {
+        ctx.fillStyle = "red";
+      }
+      ctx.fill();
+    }
+
+    // Draw paramecium body
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 10, 5, 0, 0, Math.PI * 2);
+    ctx.fillStyle = this.alive ? "rgba(255,255,255,0.6)" : this.deathColor;
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw nucleus
+    if (this.alive) {
+      ctx.beginPath();
+      ctx.arc(2, 0, 2, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(100,100,255,0.8)";
+      ctx.fill();
+    }
+
+    ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+
+  shouldReproduce() {
+    return this.alive && this.reproduceTimer > 400 && Math.random() < reproductionChance;
+  }
+
+  reproduce() {
+    this.reproduceTimer = 0;
+    return new Paramecium(this.x + Math.random() * 5, this.y + Math.random() * 5);
+  }
+
+  findNearestFood() {
+    return foodParticles.filter(f => !f.eaten).sort((a,b) => {
+      return ((a.x - this.x)**2 + (a.y - this.y)**2) - ((b.x - this.x)**2 + (b.y - this.y)**2);
+    })[0];
+  }
+
+  kill(color) {
+    this.alive = false;
+    this.deathColor = color;
+    deathCount++;
+  }
+}
+
+class Food {
+  constructor(x, y, type = "normal") {
+    this.x = x;
+    this.y = y;
+    this.type = type;
+    this.eaten = false;
+  }
+
+  draw() {
+    if (this.eaten) return;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = {
+      normal: "orange",
+      mutant: "purple",
+      deadly: "red"
+    }[this.type] || "gray";
+    ctx.fill();
+  }
+}
+
+function initialize() {
+  paramecia = [];
+  foodParticles = [];
+  zones = [];
+  simTime = 0;
+  deathCount = 0;
+  selectedZoneIndex = -1;
+  for (let i = 0; i < 15; i++) {
+    paramecia.push(new Paramecium(Math.random() * canvas.width, Math.random() * canvas.height));
+  }
+}
+
+function drawZones() {
+  zones.forEach((zone, index) => {
+    const x = Math.min(zone.x1, zone.x2);
+    const y = Math.min(zone.y1, zone.y2);
+    const width = Math.abs(zone.x2 - zone.x1);
+    const height = Math.abs(zone.y2 - zone.y1);
+    
+    ctx.fillStyle = 
+      zone.type === "uv" ? `rgba(255, 255, 0, ${0.3 * zone.intensity/100})` :
+      zone.type === "acid" ? `rgba(255, 0, 0, ${0.3 * zone.intensity/100})` :
+      `rgba(0, 200, 255, ${0.3 * zone.intensity/100})`;
+    
+    ctx.fillRect(x, y, width, height);
+    
+    // Highlight selected zone
+    ctx.strokeStyle = index === selectedZoneIndex ? "white" : 
+      zone.type === "uv" ? "rgba(255, 255, 0, 0.7)" :
+      zone.type === "acid" ? "rgba(255, 0, 0, 0.7)" :
+      "rgba(0, 200, 255, 0.7)";
+    ctx.lineWidth = index === selectedZoneIndex ? 3 : 1;
+    ctx.strokeRect(x, y, width, height);
+    
+    // Label the zone
+    ctx.fillStyle = "white";
+    ctx.font = "12px Arial";
+    ctx.fillText(
+      `${zone.type.toUpperCase()} (${zone.intensity}%)`, 
+      x + 5, 
+      y + 15
+    );
+  });
+  
+  // Draw temporary zone while drawing
+  if (isDrawingZone && currentZoneType) {
+    const x = Math.min(zoneStartPos.x, tempZonePos.x2);
+    const y = Math.min(zoneStartPos.y, tempZonePos.y2);
+    const width = Math.abs(tempZonePos.x2 - zoneStartPos.x);
+    const height = Math.abs(tempZonePos.y2 - zoneStartPos.y);
+    
+    ctx.fillStyle = 
+      currentZoneType === "uv" ? `rgba(255, 255, 0, ${0.3 * uvIntensity/100})` :
+      currentZoneType === "acid" ? `rgba(255, 0, 0, ${0.3 * acidIntensity/100})` :
+      `rgba(0, 200, 255, ${0.3 * coldIntensity/100})`;
+    
+    ctx.fillRect(x, y, width, height);
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, width, height);
+  }
+}
+
+function animate() {
+  if (!running) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const newOnes = [];
+
+  // Draw zones first so they appear behind everything
+  drawZones();
+
+  paramecia.forEach(p => {
+    p.update();
+    p.draw();
+    if (p.shouldReproduce()) newOnes.push(p.reproduce());
+  });
+
+  paramecia = paramecia.filter(p => p.fade > 0).concat(newOnes);
+  foodParticles = foodParticles.filter(f => !f.eaten);
+  foodParticles.forEach(f => f.draw());
+
+  simTime += 0.05 * globalSpeed;
+  updateUI();
+  animationFrameId = requestAnimationFrame(animate);
+}
+
+function updateUI() {
+  populationDisplay.textContent = paramecia.filter(p => p.alive).length;
+  deathsDisplay.textContent = deathCount;
+  clockDisplay.textContent = `${Math.floor(simTime)}s`;
+  reproVal.textContent = reproductionChance.toFixed(4);
+  speedVal.textContent = globalSpeed.toFixed(1);
+  tempVal.textContent = temperature;
+  
+  // Update zone intensity displays
+  document.getElementById("uvIntensityVal").textContent = uvIntensity;
+  document.getElementById("acidIntensityVal").textContent = acidIntensity;
+  document.getElementById("coldIntensityVal").textContent = coldIntensity;
+  
+  // Update selected zone intensity if one is selected
+  if (selectedZoneIndex >= 0) {
+    const zone = zones[selectedZoneIndex];
+    if (zone.type === "uv") uvIntensity = zone.intensity;
+    if (zone.type === "acid") acidIntensity = zone.intensity;
+    if (zone.type === "cold") coldIntensity = zone.intensity;
+    
+    document.getElementById("uvIntensity").value = uvIntensity;
+    document.getElementById("acidIntensity").value = acidIntensity;
+    document.getElementById("coldIntensity").value = coldIntensity;
+  }
+}
+
+reproInput.addEventListener("input", () => {
+  reproductionChance = parseFloat(reproInput.value);
+});
+speedInput.addEventListener("input", () => {
+  globalSpeed = parseFloat(speedInput.value);
+});
+tempInput.addEventListener("input", () => {
+  temperature = parseInt(tempInput.value);
+});
+
+// Zone intensity controls
+document.getElementById("uvIntensity").addEventListener("input", () => {
+  uvIntensity = parseInt(document.getElementById("uvIntensity").value);
+  if (selectedZoneIndex >= 0 && zones[selectedZoneIndex].type === "uv") {
+    zones[selectedZoneIndex].intensity = uvIntensity;
+  }
+});
+document.getElementById("acidIntensity").addEventListener("input", () => {
+  acidIntensity = parseInt(document.getElementById("acidIntensity").value);
+  if (selectedZoneIndex >= 0 && zones[selectedZoneIndex].type === "acid") {
+    zones[selectedZoneIndex].intensity = acidIntensity;
+  }
+});
+document.getElementById("coldIntensity").addEventListener("input", () => {
+  coldIntensity = parseInt(document.getElementById("coldIntensity").value);
+  if (selectedZoneIndex >= 0 && zones[selectedZoneIndex].type === "cold") {
+    zones[selectedZoneIndex].intensity = coldIntensity;
+  }
+});
+
+// Clear zones button
+document.getElementById("clearZones").addEventListener("click", () => {
+  zones = [];
+  selectedZoneIndex = -1;
+});
+
+// Delete zone button
+document.getElementById("deleteZone").addEventListener("click", () => {
+  if (selectedZoneIndex >= 0) {
+    zones.splice(selectedZoneIndex, 1);
+    selectedZoneIndex = -1;
+  }
+});
+
+function resetSimulation() {
+  initialize();
+  if (!running) {
+    running = true;
+    toggleSimBtn.textContent = "Stop Simulation";
+    animate();
+  }
+}
+
+["normalFood", "mutantFood", "deadlyFood"].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener("dragstart", e => {
+    draggingType = id === "normalFood" ? "normal" : id === "mutantFood" ? "mutant" : "deadly";
+    el.classList.add("dragging");
+    e.dataTransfer.setDragImage(new Image(), 0, 0);
+  });
+  el.addEventListener("dragend", () => {
+    draggingType = null;
+    el.classList.remove("dragging");
+  });
+});
+
+// Zone creation and selection
+document.querySelectorAll(".zone-control").forEach(control => {
+  control.addEventListener("click", (e) => {
+    if (e.target.tagName !== "INPUT") { // Don't change mode when adjusting slider
+      currentZoneType = control.id.replace("Control", "");
+      isDrawingZone = false;
+      selectedZoneIndex = -1;
+      canvas.style.cursor = "crosshair";
+      
+      // Highlight active control
+      document.querySelectorAll(".zone-control").forEach(c => c.classList.remove("zone-active"));
+      control.classList.add("zone-active");
+    }
+  });
+});
+
+canvas.addEventListener("mousedown", e => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+  const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+  
+  // Check if clicking on existing zone
+  for (let i = zones.length - 1; i >= 0; i--) {
+    const zone = zones[i];
+    const x1 = Math.min(zone.x1, zone.x2);
+    const x2 = Math.max(zone.x1, zone.x2);
+    const y1 = Math.min(zone.y1, zone.y2);
+    const y2 = Math.max(zone.y1, zone.y2);
+    
+    if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
+      selectedZoneIndex = i;
+      currentZoneType = null;
+      isDrawingZone = false;
+      isDraggingZone = true;
+      dragOffset = {
+        x: mouseX - x1,
+        y: mouseY - y1
+      };
+      
+      // Update intensity controls to match selected zone
+      if (zone.type === "uv") {
+        uvIntensity = zone.intensity;
+        document.getElementById("uvIntensity").value = uvIntensity;
+      } else if (zone.type === "acid") {
+        acidIntensity = zone.intensity;
+        document.getElementById("acidIntensity").value = acidIntensity;
+      } else if (zone.type === "cold") {
+        coldIntensity = zone.intensity;
+        document.getElementById("coldIntensity").value = coldIntensity;
+      }
+      
+      // Highlight the zone control
+      document.querySelectorAll(".zone-control").forEach(c => c.classList.remove("zone-active"));
+      document.getElementById(`${zone.type}Control`).classList.add("zone-active");
+      
+      return;
+    }
+  }
+  
+  // If no zone clicked and we have a zone type selected, start drawing new zone
+  if (currentZoneType) {
+    isDrawingZone = true;
+    isDraggingZone = false;
+    zoneStartPos = { x: mouseX, y: mouseY };
+    tempZonePos = { x1: mouseX, y1: mouseY, x2: mouseX, y2: mouseY };
+    selectedZoneIndex = -1;
+  } else {
+    selectedZoneIndex = -1;
+  }
+});
+
+canvas.addEventListener("mousemove", e => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+  const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+  
+  if (isDrawingZone && currentZoneType) {
+    tempZonePos.x2 = mouseX;
+    tempZonePos.y2 = mouseY;
+  } else if (isDraggingZone && selectedZoneIndex >= 0) {
+    const zone = zones[selectedZoneIndex];
+    const width = Math.abs(zone.x2 - zone.x1);
+    const height = Math.abs(zone.y2 - zone.y1);
+    
+    // Calculate new position based on drag offset
+    const newX1 = mouseX - dragOffset.x;
+    const newY1 = mouseY - dragOffset.y;
+    
+    zones[selectedZoneIndex] = {
+      ...zone,
+      x1: newX1,
+      y1: newY1,
+      x2: newX1 + width,
+      y2: newY1 + height
+    };
+  }
+});
+
+canvas.addEventListener("mouseup", e => {
+  if (isDrawingZone && currentZoneType) {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+    
+    // Only create zone if it's big enough
+    if (Math.abs(mouseX - zoneStartPos.x) > 20 && Math.abs(mouseY - zoneStartPos.y) > 20) {
+      zones.push({
+        type: currentZoneType,
+        x1: zoneStartPos.x,
+        y1: zoneStartPos.y,
+        x2: mouseX,
+        y2: mouseY,
+        intensity: currentZoneType === "uv" ? uvIntensity : 
+                  currentZoneType === "acid" ? acidIntensity : 
+                  coldIntensity
+      });
+      selectedZoneIndex = zones.length - 1;
+    }
+  }
+  
+  isDrawingZone = false;
+  isDraggingZone = false;
+});
+
+canvas.addEventListener("mouseleave", () => {
+  isDrawingZone = false;
+  isDraggingZone = false;
+});
+
+canvas.addEventListener("dragover", e => e.preventDefault());
+canvas.addEventListener("drop", e => {
+  e.preventDefault();
+  if (draggingType) {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    foodParticles.push(new Food(x, y, draggingType));
+    draggingType = null;
+  }
+});
+
+const toggleSimBtn = document.getElementById("toggleSim");
+toggleSimBtn.addEventListener("click", () => {
+  running = !running;
+  toggleSimBtn.textContent = running ? "Stop Simulation" : "Start Simulation";
+  if (running) animate(); else cancelAnimationFrame(animationFrameId);
+});
+
+function downloadReport() {
+  const realReproTimeSec = 180;
+  const simReproPeriodSec = 400 * (0.05 / globalSpeed);
+  const scaleFactor = realReproTimeSec / simReproPeriodSec;
+  const estimatedRealSeconds = simTime * scaleFactor;
+  const estimatedRealHours = (estimatedRealSeconds / 3600).toFixed(2);
+
+  const dataURL = canvas.toDataURL("image/png");
+  const html = `
+    <html><head><title>Simulation Report</title></head>
+    <body style="font-family:sans-serif;margin:20px;">
+      <h1>Paramecium Simulation Report</h1>
+      <p><strong>Simulated Time:</strong> ${Math.floor(simTime)} seconds</p>
+      <p><strong>Estimated Real-Life Equivalent:</strong> ~${estimatedRealHours} hours</p>
+      <p><strong>Final Population:</strong> ${paramecia.filter(p => p.alive).length}</p>
+      <p><strong>Total Deaths:</strong> ${deathCount}</p>
+      <p><strong>Reproduction Chance:</strong> ${reproductionChance.toFixed(4)}</p>
+      <p><strong>Speed:</strong> ${globalSpeed.toFixed(2)}</p>
+      <p><strong>Temperature:</strong> ${temperature}°C</p>
+      <p><strong>UV Zones:</strong> ${zones.filter(z => z.type === "uv").length}</p>
+      <p><strong>Acidic Zones:</strong> ${zones.filter(z => z.type === "acid").length}</p>
+      <p><strong>Cold Zones:</strong> ${zones.filter(z => z.type === "cold").length}</p>
+      <hr />
+      <img src="${dataURL}" style="max-width:100%;border:1px solid #ccc;" />
+    </body></html>
+  `;
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "simulation_report.html";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+initialize();
+animate();
+</script>
+</body>
+</html>
