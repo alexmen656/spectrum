@@ -14,4 +14,4 @@ We’re a team of curious and creative minds working on something awesome. To ma
 - Give constructive feedback, not harsh criticism.
 
 
-<img src="LogoGithub.png" width="1973" style="vertical-align: middle; margin-right: 10px;">
+<img src="UPDATEDWIDEFORMATLOGOGITHUB.png" width="1973" style="vertical-align: middle; margin-right: 10px;">
