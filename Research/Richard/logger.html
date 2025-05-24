@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Lab Notebook</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #preview {
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .official-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .official-logo {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .official-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .official-footer {
+            margin-top: 20px;
+            border-top: 1px solid #333;
+            padding-top: 10px;
+            text-align: right;
+            font-size: 12px;
+        }
+        .entry-container {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+        .signature-line {
+            border-top: 1px solid #333;
+            width: 200px;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+        .signature-label {
+            font-size: 12px;
+        }
+        .image-upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .image-upload-area:hover {
+            border-color: #999;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin: 10px 0;
+        }
+        .image-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+        .button-group {
+            margin: 20px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        #loadingIndicator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingIndicator">Generating PDF, please wait...</div>
+    <div class="container">
+        <h1>Automatic Lab Notebook</h1>
+        
+        <div class="form-group">
+            <label for="labName">Lab Name:</label>
+            <input type="text" id="labName" placeholder="Enter lab name" value="Advanced Research Laboratory">
+        </div>
+        
+        <div class="form-group">
+            <label for="people">People (amount):</label>
+            <input type="text" id="people" placeholder="Enter amount of people" value="5">
+        </div>
+        
+        <div class="form-group">
+            <label for="researcherName">Researcher Name:</label>
+            <input type="text" id="researcherName" placeholder="Enter your name" value="Dr. Jane Doe">
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" id="date">
+        </div>
+        
+        <div class="form-group">
+            <label for="experimentTitle">Experiment Title:</label>
+            <input type="text" id="experimentTitle" placeholder="Enter experiment title">
+        </div>
+        
+        <div class="form-group">
+            <label for="objective">Objective:</label>
+            <textarea id="objective" placeholder="Describe the objective of the experiment"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="materials">Materials:</label>
+            <textarea id="materials" placeholder="List materials used"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="procedure">Procedure:</label>
+            <textarea id="procedure" placeholder="Describe the procedure step-by-step"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="observations">Observations:</label>
+            <textarea id="observations" placeholder="Record your observations"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="results">Results:</label>
+            <textarea id="results" placeholder="Record the results"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="conclusion">Conclusion:</label>
+            <textarea id="conclusion" placeholder="Write your conclusion"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>Images/Documents:</label>
+            <div id="imageUploadArea" class="image-upload-area">
+                <p>Drag & drop images here or click to select files</p>
+                <p><small>You can also paste (Ctrl+V) images from clipboard</small></p>
+                <input type="file" id="fileInput" accept="image/*" multiple class="hidden">
+                <div id="imagePreviews"></div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="generateBtn">Generate Lab Notebook Entry</button>
+            <button id="downloadBtn">Download as PDF</button>
+            <button id="clearBtn">Clear All</button>
+        </div>
+        
+        <div id="preview">
+            <h2>Preview</h2>
+            <div id="notebookPreview"></div>
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById('date').valueAsDate = new Date();
+        
+
+        let uploadedImages = [];
+        
+
+        document.getElementById('generateBtn').addEventListener('click', generateNotebookEntry);
+        document.getElementById('downloadBtn').addEventListener('click', downloadAsPDF);
+        document.getElementById('clearBtn').addEventListener('click', clearAll);
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+        document.getElementById('imageUploadArea').addEventListener('click', () => document.getElementById('fileInput').click());
+        
+
+        const uploadArea = document.getElementById('imageUploadArea');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#3498db';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#ccc';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ccc';
+            if (e.dataTransfer.files.length) {
+                handleFileSelect({ target: { files: e.dataTransfer.files } });
+            }
+        });
+        
+
+        document.addEventListener('paste', (e) => {
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        addImagePreview(event.target.result);
+                    };
+                    reader.readAsDataURL(blob);
+                }
+            }
+        });
+        
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            addImagePreview(e.target.result);
+                        };
+                    })(file);
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+        
+        function addImagePreview(imageData) {
+            const previewId = 'preview-' + Date.now();
+            const previewContainer = document.createElement('div');
+            previewContainer.className = 'image-preview-container';
+            previewContainer.id = previewId;
+            
+            const img = document.createElement('img');
+            img.src = imageData;
+            img.className = 'image-preview';
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.onclick = () => {
+                document.getElementById('imagePreviews').removeChild(previewContainer);
+                uploadedImages = uploadedImages.filter(img => img.id !== previewId);
+            };
+            
+            previewContainer.appendChild(img);
+            previewContainer.appendChild(removeBtn);
+            document.getElementById('imagePreviews').appendChild(previewContainer);
+            
+            uploadedImages.push({
+                id: previewId,
+                data: imageData
+            });
+        }
+        
+        function generateNotebookEntry() {
+            const labName = document.getElementById('labName').value || 'Advanced Research Laboratory';
+            const people = document.getElementById('people').value || '1';
+            const researcherName = document.getElementById('researcherName').value || 'Researcher Name';
+            const date = document.getElementById('date').value || new Date().toISOString().split('T')[0];
+            const experimentTitle = document.getElementById('experimentTitle').value || 'Untitled Experiment';
+            const objective = document.getElementById('objective').value || 'No objective provided.';
+            const materials = document.getElementById('materials').value || 'No materials listed.';
+            const procedure = document.getElementById('procedure').value || 'No procedure described.';
+            const observations = document.getElementById('observations').value || 'No observations recorded.';
+            const results = document.getElementById('results').value || 'No results obtained.';
+            const conclusion = document.getElementById('conclusion').value || 'No conclusion reached.';
+            
+            const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+            });
+            
+
+            let imagesHTML = '';
+            if (uploadedImages.length > 0) {
+                imagesHTML += '<div style="margin: 20px 0;"><strong>Attached Images/Documents:</strong></div>';
+                imagesHTML += '<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">';
+                uploadedImages.forEach(img => {
+                    imagesHTML += `<div class="image-container"><img src="${img.data}" style="max-height: 150px;"></div>`;
+                });
+                imagesHTML += '</div>';
+            }
+            
+            const entryHTML = `
+                <div class="entry-container">
+                    <div class="official-header">
+                        <div class="official-logo">${labName}</div>
+                        <div class="official-title">LABORATORY NOTEBOOK</div>
+                        <div class="official-logo">Team: ${people} people</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Researcher:</strong> ${researcherName}<br>
+                        <strong>Date:</strong> ${formattedDate}<br>
+                        <strong>Experiment Title:</strong> ${experimentTitle}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Objective:</strong><br>
+                        ${objective.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Materials:</strong><br>
+                        ${materials.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Procedure:</strong><br>
+                        ${procedure.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Observations:</strong><br>
+                        ${observations.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Results:</strong><br>
+                        ${results.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    ${imagesHTML}
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Conclusion:</strong><br>
+                        ${conclusion.replace(/\n/g, '<br>')}
+                    </div>
+                    
+                    <div class="signature-line"></div>
+                    <div class="signature-label">Researcher Signature</div>
+                    
+                    <div class="official-footer">
+                        CONFIDENTIAL - PROPERTY OF ${labName.toUpperCase()}<br>
+                        ENTRY ${Math.floor(Math.random() * 1000) + 1} | PAGE ${Math.floor(Math.random() * 50) + 1}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('notebookPreview').innerHTML = entryHTML;
+            return entryHTML;
+        }
+        
+        async function downloadAsPDF() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            try {
+
+                loadingIndicator.style.display = 'flex';
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = 'Generating PDF...';
+                
+
+                if (!document.getElementById('notebookPreview').innerHTML) {
+                    generateNotebookEntry();
+                    // Wait for content to render
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+                
+
+                const hiddenContainer = document.createElement('div');
+                hiddenContainer.style.position = 'absolute';
+                hiddenContainer.style.left = '-9999px';
+                hiddenContainer.style.width = '800px';
+                hiddenContainer.style.padding = '20px';
+                hiddenContainer.style.backgroundColor = 'white';
+                
+
+                const contentClone = document.getElementById('notebookPreview').cloneNode(true);
+                hiddenContainer.appendChild(contentClone);
+                document.body.appendChild(hiddenContainer);
+                
+
+                await loadAllImages(contentClone);
+
+                const opt = {
+                    margin: 10,
+                    filename: 'lab_notebook.pdf',
+                    image: { type: 'jpeg', quality: 1 },
+                    html2canvas: { 
+                        scale: 2,
+                        logging: false,
+                        useCORS: true,
+                        allowTaint: true,
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait',
+                        compress: true
+                    }
+                };
+                
+
+                await html2pdf().set(opt).from(hiddenContainer).save();
+                
+            } catch (error) {
+                console.error('PDF generation failed:', error);
+                alert('Failed to generate PDF. Please try again.');
+            } finally {
+                // Clean up
+                const hiddenContainer = document.querySelector('div[style*="left: -9999px"]');
+                if (hiddenContainer) {
+                    document.body.removeChild(hiddenContainer);
+                }
+                loadingIndicator.style.display = 'none';
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = 'Download as PDF';
+            }
+        }
+        
+
+        function loadAllImages(element) {
+            const images = element.getElementsByTagName('img');
+            const promises = [];
+            
+            for (let img of images) {
+                if (!img.complete) {
+                    promises.push(new Promise(resolve => {
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    }));
+                }
+            }
+            
+            return Promise.all(promises);
+        }
+        
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all inputs?')) {
+                document.getElementById('labName').value = '';
+                document.getElementById('people').value = '';
+                document.getElementById('researcherName').value = '';
+                document.getElementById('date').valueAsDate = new Date();
+                document.getElementById('experimentTitle').value = '';
+                document.getElementById('objective').value = '';
+                document.getElementById('materials').value = '';
+                document.getElementById('procedure').value = '';
+                document.getElementById('observations').value = '';
+                document.getElementById('results').value = '';
+                document.getElementById('conclusion').value = '';
+                document.getElementById('notebookPreview').innerHTML = '';
+                document.getElementById('imagePreviews').innerHTML = '';
+                uploadedImages = [];
+            }
+        }
+        
+
+        window.onload = function() {
+            document.getElementById('experimentTitle').value = 'Synthesis of Compound X';
+            document.getElementById('objective').value = 'To synthesize and characterize Compound X using the modified Smith protocol.';
+            document.getElementById('materials').value = '- Reagent A (50g)\n- Solvent B (200mL)\n- Catalyst C (5mg)\n- Glassware set\n- Magnetic stirrer';
+            document.getElementById('procedure').value = '1. Dissolve Reagent A in Solvent B\n2. Add Catalyst C slowly while stirring\n3. Heat to 60°C for 2 hours\n4. Cool to room temperature\n5. Filter and dry the product';
+            document.getElementById('observations').value = 'Solution turned from clear to pale yellow after adding catalyst.\nMild exotherm observed during heating phase.\nFinal product appears as white crystalline powder.';
+            document.getElementById('results').value = 'Obtained 42g of product (84% yield).\nPreliminary tests show purity >90% by HPLC.';
+            document.getElementById('conclusion').value = 'The synthesis was successful with good yield. Further purification may be needed for analytical applications.';
+        };
+    </script>
+</body>
+</html>
