@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramecium Swimming & Avoiding Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: #2e8b57;
+        }
+        canvas {
+            background-color: white;
+            border: 2px solid #2e8b57;
+            border-radius: 5px;
+            margin: 10px auto;
+            display: block;
+            cursor: crosshair;
+        }
+        .controls {
+            margin: 15px;
+        }
+        button {
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3cb371;
+        }
+        .mode-selector {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Paramecium Swimming & Avoiding Simulator</h1>
+    
+    <div class="mode-selector">
+        <span>Drawing Mode: </span>
+        <button id="drawModeBtn">Draw Obstacles</button>
+        <button id="eraseModeBtn">Erase</button>
+    </div>
+    
+    <canvas id="simCanvas" width="600" height="400"></canvas>
+    
+    <div class="controls">
+        <button id="addRandomBtn">Add Random Paramecium</button>
+        <button id="clearAllBtn">Clear All</button>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        const drawModeBtn = document.getElementById('drawModeBtn');
+        const eraseModeBtn = document.getElementById('eraseModeBtn');
+        const addRandomBtn = document.getElementById('addRandomBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        
+       
+        let isDrawing = false;
+        let isErasing = false;
+        let drawingMode = 'obstacle'; 
+        let brushSize = 20;
+        
+        
+        let paramecia = [];
+        
+        
+        let obstacleMap = new Array(canvas.width * canvas.height).fill(false);
+        
+        
+        createParamecium(100, 200);
+        
+        
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        drawModeBtn.addEventListener('click', () => {
+            drawingMode = 'obstacle';
+            updateButtonStyles();
+        });
+        
+        eraseModeBtn.addEventListener('click', () => {
+            drawingMode = 'erase';
+            updateButtonStyles();
+        });
+        
+        addRandomBtn.addEventListener('click', () => {
+            const x = 50 + Math.random() * (canvas.width - 100);
+            const y = 50 + Math.random() * (canvas.height - 100);
+            createParamecium(x, y);
+        });
+        
+        clearAllBtn.addEventListener('click', () => {
+            paramecia = [];
+            obstacleMap = new Array(canvas.width * canvas.height).fill(false);
+            createParamecium(100, 200);
+        });
+        
+        function updateButtonStyles() {
+            drawModeBtn.style.backgroundColor = drawingMode === 'obstacle' ? '#3cb371' : '#2e8b57';
+            eraseModeBtn.style.backgroundColor = drawingMode === 'erase' ? '#3cb371' : '#2e8b57';
+        }
+        
+        function createParamecium(x, y) {
+            paramecia.push({
+                x: x,
+                y: y,
+                size: 15 + Math.random() * 10,
+                angle: Math.random() * Math.PI * 2,
+                speed: 1 + Math.random() * 2,
+                color: `hsl(${Math.random() * 120 + 100}, 70%, 50%)`,
+                isAvoiding: false,
+                avoidTimer: 0,
+                avoidAngle: 0,
+                ciliaPhase: Math.random() * Math.PI * 2,
+                pulsePhase: 0,
+                bodyWobble: 0
+            });
+        }
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, brushSize, 0, Math.PI * 2);
+            
+            if (drawingMode === 'obstacle') {
+                ctx.fillStyle = '#4682b4';
+                ctx.fill();
+                markObstacleArea(x, y, true);
+            } else {
+                ctx.fillStyle = 'white';
+                ctx.fill();
+                markObstacleArea(x, y, false);
+            }
+        }
+        
+        function markObstacleArea(x, y, isObstacle) {
+            const radius = brushSize;
+            const startX = Math.max(0, x - radius);
+            const endX = Math.min(canvas.width, x + radius);
+            const startY = Math.max(0, y - radius);
+            const endY = Math.min(canvas.height, y + radius);
+            
+            for (let px = startX; px < endX; px++) {
+                for (let py = startY; py < endY; py++) {
+                    const distance = Math.sqrt((px - x) ** 2 + (py - y) ** 2);
+                    if (distance <= radius) {
+                        const index = py * canvas.width + px;
+                        obstacleMap[index] = isObstacle;
+                    }
+                }
+            }
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+        }
+        
+        function isObstacle(x, y) {
+            const px = Math.floor(x);
+            const py = Math.floor(y);
+            
+            if (px < 0 || px >= canvas.width || py < 0 || py >= canvas.height) {
+                return true; 
+            }
+            
+            return obstacleMap[py * canvas.width + px];
+        }
+        
+    
+        function animate() {
+  
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+       
+            drawObstacles();
+            
+         
+            paramecia.forEach(p => {
+                updateParamecium(p);
+                drawParamecium(p);
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        function updateParamecium(p) {
+           
+            p.ciliaPhase += 0.2;
+            p.pulsePhase += 0.05;
+            p.bodyWobble = Math.sin(p.pulsePhase) * 0.2;
+            
+            if (p.isAvoiding) {
+               
+                p.avoidTimer--;
+                
+                if (p.avoidTimer <= 0) {
+                    p.isAvoiding = false;
+                    
+                    p.angle = p.avoidAngle;
+                } else {
+                    
+                    p.x -= Math.cos(p.angle) * p.speed * 0.8;
+                    p.y -= Math.sin(p.angle) * p.speed * 0.8;
+                }
+            } else {
+                
+                const moveX = Math.cos(p.angle) * p.speed;
+                const moveY = Math.sin(p.angle) * p.speed;
+                
+                
+                const checkDistance = p.size * 0.8;
+                const checkX = p.x + Math.cos(p.angle) * checkDistance;
+                const checkY = p.y + Math.sin(p.angle) * checkDistance;
+                
+                if (isObstacle(checkX, checkY)) {
+                    
+                    p.isAvoiding = true;
+                    p.avoidTimer = 15 + Math.random() * 10;
+                    
+                    
+                    p.avoidAngle = p.angle + (Math.random() - 0.5) * Math.PI;
+                } else {
+                    
+                    p.x += moveX;
+                    p.y += moveY;
+                }
+                
+                
+                if (p.x < p.size/2 || p.x > canvas.width - p.size/2) {
+                    p.angle = Math.PI - p.angle;
+                }
+                if (p.y < p.size/2 || p.y > canvas.height - p.size/2) {
+                    p.angle = -p.angle;
+                }
+            }
+        }
+        
+        function drawParamecium(p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            
+            
+            ctx.beginPath();
+            const wobbleFactor = 1 + p.bodyWobble;
+            ctx.ellipse(0, 0, p.size * wobbleFactor, p.size * 0.5 / wobbleFactor, 0, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            
+            
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.lineWidth = 1;
+            const ciliaCount = 14;
+            for (let i = 0; i < ciliaCount; i++) {
+                const angle = (i / ciliaCount) * Math.PI * 2;
+                const waveOffset = Math.sin(p.ciliaPhase + i * 0.5) * 3;
+                
+                const x1 = p.size * 0.8 * Math.cos(angle);
+                const y1 = p.size * 0.4 * Math.sin(angle);
+                const x2 = (p.size * 0.8 + 10 + waveOffset) * Math.cos(angle);
+                const y2 = (p.size * 0.4 + 5 + waveOffset) * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+            
+            
+            ctx.beginPath();
+            const mouthSize = p.size * 0.2 * (1 + p.bodyWobble * 0.5);
+            ctx.ellipse(-p.size * 0.6, 0, mouthSize, mouthSize * 0.5, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#8b0000';
+            ctx.fill();
+            
+           
+            if (p.pulsePhase % (Math.PI * 2) < Math.PI) {
+                const vacPhase = p.pulsePhase % Math.PI;
+                const vacX = -p.size * 0.3 + p.size * 0.4 * vacPhase/Math.PI;
+                const vacSize = p.size * 0.15 * (1 + Math.sin(vacPhase * 2) * 0.3);
+                
+                ctx.beginPath();
+                ctx.arc(vacX, 0, vacSize, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(200, 150, 100, 0.7)';
+                ctx.fill();
+            }
+            
+            ctx.restore();
+        }
+        
+        function drawObstacles() {
+           
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    const index = y * canvas.width + x;
+                    if (obstacleMap[index]) {
+                        const pixelIndex = (y * canvas.width + x) * 4;
+                        imageData.data[pixelIndex] = 70;     // R
+                        imageData.data[pixelIndex + 1] = 130; // G
+                        imageData.data[pixelIndex + 2] = 180; // B
+                        imageData.data[pixelIndex + 3] = 255; // A
+                    }
+                }
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+        
+       
+        updateButtonStyles();
+        animate();
+    </script>
+</body>
+</html>
