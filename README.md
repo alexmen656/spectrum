@@ -69,6 +69,14 @@ The project is led by a dedicated team of students with backgrounds in science, 
 Additional information is available on our website: [https://alex.polan.sk/team-spectrum/](https://alex.polan.sk/team-spectrum/)
 
 
+---
+
+Temperature Sensors: 
+
+<div align="center">
+  <img src="WhatsApp Image 2025-06-21 at 23.23.58.jpeg" width="460" alt="Discord Logo">
+</div>
+
 
 ---
 
